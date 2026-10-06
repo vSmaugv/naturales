@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Desafío Mental</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #020207;
+    color: #ffffff;
+    overflow-x: hidden;
+}
+
+/* ---------- ENCABEZADO ---------- */
+
+header {
+    min-height: 650px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 50px 20px;
+    background:
+        radial-gradient(circle at 10% 20%, #e9f2ff 0, transparent 25%),
+        radial-gradient(circle at 90% 80%, #f1e9ff 0, transparent 25%),
+        #fff;
+}
+
+.hero {
+    max-width: 900px;
+}
+
+.badge {
+    display: inline-block;
+    background: #f0edff;
+    color: #6646e8;
+    padding: 10px 18px;
+    border-radius: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.hero h1 {
+    font-size: clamp(45px, 8vw, 85px);
+    line-height: 0.95;
+    margin-bottom: 25px;
+    background: linear-gradient(90deg, #6646e8, #3976ff);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.hero p {
+    font-size: 20px;
+    color: #666;
+    max-width: 650px;
+    margin: auto;
+    line-height: 1.6;
+}
+
+.scroll {
+    margin-top: 50px;
+    color: #888;
+}
+
+/* ---------- VIDEO ---------- */
+
+.video-section {
+    padding: 80px 20px;
+    background: #f8f9fc;
+    text-align: center;
+}
+
+.section-title {
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+.section-subtitle {
+    color: #777;
+    margin-bottom: 40px;
+    font-size: 18px;
+}
+
+.video-container {
+    max-width: 900px;
+    margin: auto;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,.12);
+    background: #000;
+}
+
+video {
+    width: 100%;
+    display: block;
+}
+
+/* ---------- NIVELES ---------- */
+
+.levels {
+    padding: 90px 20px;
+    max-width: 1200px;
+    margin: auto;
+    text-align: center;
+}
+
+.levels-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-top: 50px;
+}
+
+.card {
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 25px;
+    padding: 35px 25px;
+    text-align: left;
+    box-shadow: 0 10px 35px rgba(0,0,0,.07);
+    transition: .3s;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 50px rgba(0,0,0,.12);
+}
+
+.icon {
+    font-size: 50px;
+    margin-bottom: 20px;
+}
+
+.level {
+    color: #7655ee;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.card h3 {
+    font-size: 27px;
+    margin-bottom: 15px;
+}
+
+.card p {
+    color: #777;
+    line-height: 1.6;
+    min-height: 80px;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+    padding: 14px 22px;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: .2s;
+}
+
+.play-btn {
+    width: 100%;
+    margin-top: 20px;
+    background: #6646e8;
+    color: white;
+}
+
+.play-btn:hover {
+    background: #5132d4;
+    transform: scale(1.02);
+}
+
+/* ---------- JUEGOS ---------- */
+
+.game-section {
+    display: none;
+    padding: 80px 20px;
+    background: #f7f8fc;
+    min-height: 700px;
+}
+
+.game {
+    max-width: 950px;
+    margin: auto;
+    text-align: center;
+}
+
+.game h2 {
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+.instructions {
+    color: #777;
+    margin-bottom: 25px;
+}
+
+.stats {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.stat {
+    background: white;
+    padding: 12px 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.07);
+}
+
+/* ---------- MEMORIA ---------- */
+
+.memory-board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    max-width: 600px;
+    margin: auto;
+}
+
+.memory-card {
+    height: 130px;
+    background: #6646e8;
+    border-radius: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 45px;
+    color: transparent;
+    transition: .3s;
+}
+
+.memory-card.flipped,
+.memory-card.matched {
+    background: white;
+    color: #222;
+    border: 3px solid #6646e8;
+}
+
+.memory-card.matched {
+    border-color: #37b978;
+}
+
+/* ---------- ROMPECABEZAS ---------- */
+
+.puzzle-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+}
+
+.reference {
+    width: 180px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.15);
+}
+
+.puzzle-board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 3px;
+    background: #222;
+    padding: 3px;
+    border-radius: 10px;
+}
+
+.puzzle-piece {
+    width: 100px;
+    height: 100px;
+    background-size: 300px 300px;
+    cursor: grab;
+}
+
+/* ---------- FRASES ---------- */
+
+.words-container {
+    max-width: 750px;
+    min-height: 100px;
+    margin: 30px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 5px 25px rgba(0,0,0,.08);
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.word {
+    background: #6646e8;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 12px;
+    cursor: grab;
+    font-weight: bold;
+}
+
+#sentence {
+    min-height: 80px;
+    max-width: 750px;
+    margin: auto;
+    background: #fff;
+    border: 2px dashed #bbb;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.success {
+    margin: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #25a866;
+}
+
+.back-btn {
+    margin-top: 30px;
+    background: #222;
+    color: white;
+}
+
+footer {
+    text-align: center;
+    padding: 40px;
+    background: #171717;
+    color: white;
+}
+
+/* ---------- RESPONSIVE ---------- */
+
+@media(max-width: 800px) {
+    .levels-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .memory-board {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .memory-card {
+        height: 90px;
+    }
+
+    .puzzle-board {
+        transform: scale(.85);
+    }
+}
+
+/* ---------- FONDO ESPACIAL CON ESTRELLAS DE 5 PUNTAS ---------- */
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -2;
+
+    background-image:
+        radial-gradient(circle at 15% 20%, rgba(120, 80, 255, .16), transparent 28%),
+        radial-gradient(circle at 85% 75%, rgba(50, 110, 255, .12), transparent 30%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='500' viewBox='0 0 500 500'%3E%3Cg fill='white'%3E%3Cpath d='M55 22l6 18 19 6-19 6-6 18-6-18-19-6 19-6z'/%3E%3Cpath d='M190 75l4 12 13 4-13 4-4 12-4-12-13-4 13-4z'/%3E%3Cpath d='M350 38l8 23 24 8-24 8-8 23-8-23-24-8 24-8z'/%3E%3Cpath d='M455 150l5 15 16 5-16 5-5 15-5-15-16-5 16-5z'/%3E%3Cpath d='M95 205l7 21 22 7-22 7-7 21-7-21-22-7 22-7z'/%3E%3Cpath d='M250 245l5 16 17 5-17 5-5 16-5-16-17-5 17-5z'/%3E%3Cpath d='M395 300l8 24 25 8-25 8-8 24-8-24-25-8 25-8z'/%3E%3Cpath d='M180 370l6 18 19 6-19 6-6 18-6-18-19-6 19-6z'/%3E%3Cpath d='M315 445l7 21 22 7-22 7-7 21-7-21-22-7 22-7z'/%3E%3Cpath d='M465 420l4 12 13 4-13 4-4 12-4-12-13-4 13-4z'/%3E%3C/g%3E%3C/svg%3E");
+
+    background-size: auto, auto, 500px 500px;
+    animation: starsMove 35s linear infinite;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -3;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(105,70,255,.14), transparent 32%),
+        radial-gradient(circle at 80% 70%, rgba(40,110,255,.10), transparent 32%);
+}
+
+@keyframes starsMove {
+    from { transform: translateY(0); }
+    to { transform: translateY(500px); }
+}
+
+/* ---------- AJUSTES OSCUROS ---------- */
+
+header {
+    background: transparent;
+}
+
+.hero p {
+    color: #c7c7d5;
+}
+
+.video-section {
+    background: transparent;
+}
+
+.video-container {
+    box-shadow: 0 20px 60px rgba(0,0,0,.45);
+    border: 1px solid rgba(130,100,255,.25);
+}
+
+.levels {
+    color: white;
+}
+
+.card {
+    background: rgba(12, 12, 22, .90);
+    border-color: rgba(130,100,255,.30);
+    box-shadow: 0 10px 35px rgba(0,0,0,.35);
+}
+
+.card p,
+.section-subtitle,
+.instructions {
+    color: #b9b9c8;
+}
+
+.game-section {
+    background: transparent;
+}
+
+.stat {
+    background: rgba(15,15,27,.92);
+    color: white;
+}
+
+.words-container,
+#sentence {
+    background: rgba(15,15,27,.92);
+    color: white;
+}
+
+#sentence {
+    border-color: #6155b8;
+}
+
+footer {
+    background: rgba(5,5,10,.95);
+}
+
+
+/* PLANETAS DECORATIVOS */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background-image:
+        radial-gradient(circle at 84% 18%, rgba(255,255,255,.95) 0 1px, transparent 2px),
+        radial-gradient(circle at 16% 27%, rgba(255,255,255,.9) 0 1.5px, transparent 2.5px),
+        radial-gradient(circle at 72% 70%, rgba(255,255,255,.85) 0 1px, transparent 2px),
+        radial-gradient(circle at 31% 82%, rgba(255,255,255,.9) 0 1.5px, transparent 2.5px),
+        radial-gradient(circle at 50% 48%, rgba(255,255,255,.8) 0 1px, transparent 2px);
+    background-size: 240px 240px, 310px 310px, 280px 280px, 360px 360px, 190px 190px;
+    animation: starMove 22s linear infinite;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 14% 18%, rgba(100, 150, 255, .12), transparent 24%),
+        radial-gradient(circle at 88% 76%, rgba(150, 80, 255, .12), transparent 25%);
+}
+
+/* Planeta 1: azul */
+body {
+    position: relative;
+    overflow-x: hidden;
+}
+
+body .planet-space-1,
+body .planet-space-2 {
+    position: fixed;
+    display: block;
+    pointer-events: none;
+    z-index: -1;
+    border-radius: 50%;
+}
+
+body .planet-space-1 {
+    width: 210px;
+    height: 210px;
+    right: 5%;
+    top: 20%;
+    background:
+        radial-gradient(circle at 32% 28%, rgba(255,255,255,.55) 0 3%, transparent 4%),
+        radial-gradient(circle at 62% 63%, rgba(20,55,130,.7) 0 12%, transparent 13%),
+        radial-gradient(circle at 40% 70%, rgba(30,100,170,.75) 0 15%, transparent 16%),
+        linear-gradient(135deg, #8ed8ff 0%, #287bc4 42%, #10245c 100%);
+    box-shadow: 0 0 45px rgba(65, 155, 255, .45), inset -30px -25px 45px rgba(0,0,0,.5);
+}
+
+body .planet-space-2 {
+    width: 135px;
+    height: 135px;
+    left: 5%;
+    bottom: 18%;
+    background:
+        radial-gradient(circle at 35% 30%, rgba(255,255,255,.35) 0 3%, transparent 4%),
+        radial-gradient(circle at 58% 62%, rgba(110,35,25,.7) 0 13%, transparent 14%),
+        radial-gradient(circle at 35% 70%, rgba(180,70,35,.65) 0 16%, transparent 17%),
+        linear-gradient(145deg, #f2a36e 0%, #bd4d38 48%, #40141d 100%);
+    box-shadow: 0 0 35px rgba(240, 90, 55, .3), inset -22px -18px 30px rgba(0,0,0,.5);
+}
+
+@media (max-width: 800px) {
+    body .planet-space-1 {
+        width: 120px;
+        height: 120px;
+        right: -20px;
+        top: 16%;
+    }
+    body .planet-space-2 {
+        width: 85px;
+        height: 85px;
+        left: -15px;
+        bottom: 12%;
+    }
+}
+
+</style>
+</head>
+
+<body>
+    <span class="planet-space-1" aria-hidden="true"></span>
+    <span class="planet-space-2" aria-hidden="true"></span>
+
+<!-- HERO -->
+
+<header>
+    <div class="hero">
+        <div class="badge">🧠 JUEGOS MENTALES</div>
+
+        <h1>DESAFÍO<br>MENTAL</h1>
+
+        <p>
+            Poné a prueba tu memoria, tu lógica y tu capacidad
+            para resolver problemas.
+        </p>
+
+        <div class="scroll">
+            ↓ Descubrí los niveles
+        </div>
+    </div>
+</header>
+
+
+<!-- VIDEO -->
+
+<section class="video-section">
+
+    <h2 class="section-title">¡Bienvenido al desafío!</h2>
+
+    <p class="section-subtitle">
+        Preparáte para superar tres niveles diferentes.
+    </p>
+
+    <div class="video-container">
+
+        <!-- CAMBIÁ "presentacion.mp4" POR TU VIDEO -->
+
+        <video controls>
+            <source src="presentacion.mp4" type="video/mp4">
+            Tu navegador no puede reproducir este video.
+        </video>
+
+    </div>
+
+</section>
+
+
+<!-- NIVELES -->
+
+<section class="levels" id="niveles">
+
+    <h2 class="section-title">Elegí tu nivel</h2>
+
+    <p class="section-subtitle">
+        Tres desafíos. Tres habilidades diferentes.
+    </p>
+
+    <div class="levels-grid">
+
+        <!-- NIVEL 1 -->
+
+        <div class="card">
+
+            <div class="icon">🧠</div>
+
+            <div class="level">NIVEL 1</div>
+
+            <h3>Memoria</h3>
+
+            <p>
+                Encontrá las parejas iguales entre todas las cartas
+                antes de terminar el desafío.
+            </p>
+
+            <button class="play-btn" onclick="openGame('memory')">
+                JUGAR NIVEL 1
+            </button>
+
+        </div>
+
+
+        <!-- NIVEL 2 -->
+
+        <div class="card">
+
+            <div class="icon">🧩</div>
+
+            <div class="level">NIVEL 2</div>
+
+            <h3>Rompecabezas</h3>
+
+            <p>
+                Armá correctamente la imagen colocando cada pieza
+                en su lugar.
+            </p>
+
+            <button class="play-btn" onclick="openGame('puzzle')">
+                JUGAR NIVEL 2
+            </button>
+
+        </div>
+
+
+        <!-- NIVEL 3 -->
+
+        <div class="card">
+
+            <div class="icon">🔤</div>
+
+            <div class="level">NIVEL 3</div>
+
+            <h3>Descifrá la frase</h3>
+
+            <p>
+                Ordená las palabras desordenadas y formá una frase
+                que tenga sentido.
+            </p>
+
+            <button class="play-btn" onclick="openGame('sentence')">
+                JUGAR NIVEL 3
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= MEMORIA ================= -->
+
+<section class="game-section" id="memoryGame">
+
+    <div class="game">
+
+        <h2>🧠 Nivel 1 — Memoria</h2>
+
+        <p class="instructions">
+            Encontrá todas las parejas iguales.
+        </p>
+
+        <div class="stats">
+
+            <div class="stat">
+                Movimientos: <strong id="moves">0</strong>
+            </div>
+
+            <div class="stat">
+                Parejas: <strong id="pairs">0</strong>/8
+            </div>
+
+        </div>
+
+        <div class="memory-board" id="memoryBoard"></div>
+
+        <div id="memoryMessage"></div>
+
+        <button class="play-btn" onclick="startMemory()">
+            REINICIAR
+        </button>
+
+        <button class="back-btn" onclick="closeGames()">
+            VOLVER A LOS NIVELES
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ROMPECABEZAS ================= -->
+
+<section class="game-section" id="puzzleGame">
+
+    <div class="game">
+
+        <h2>🧩 Nivel 2 — Rompecabezas</h2>
+
+        <p class="instructions">
+            Arrastrá las piezas para ordenar la imagen.
+        </p>
+
+        <div class="puzzle-area">
+
+            <img
+                class="reference"
+                src="https://picsum.photos/300/300"
+                alt="Imagen de referencia"
+            >
+
+            <div class="puzzle-board" id="puzzleBoard"></div>
+
+        </div>
+
+        <div id="puzzleMessage"></div>
+
+        <button class="play-btn" onclick="startPuzzle()">
+            REINICIAR
+        </button>
+
+        <button class="back-btn" onclick="closeGames()">
+            VOLVER A LOS NIVELES
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FRASES ================= -->
+
+<section class="game-section" id="sentenceGame">
+
+    <div class="game">
+
+        <h2>🔤 Nivel 3 — Descifrá la frase</h2>
+
+        <p class="instructions">
+            Hacé clic en las palabras para formar una frase correcta.
+        </p>
+
+        <div id="sentenceWords" class="words-container"></div>
+
+        <h3>Tu frase:</h3>
+
+        <div id="sentence"></div>
+
+        <button class="play-btn" onclick="checkSentence()">
+            COMPROBAR
+        </button>
+
+        <div id="sentenceMessage"></div>
+
+        <button class="back-btn" onclick="closeGames()">
+            VOLVER A LOS NIVELES
+        </button>
+
+    </div>
+
+</section>
+
+
+<footer>
+    <h3>DESAFÍO MENTAL</h3>
+    <p>Aprendé, jugá y superá tus límites.</p>
+</footer>
+
+
+<script>
+
+/* =========================================
+   NAVEGACIÓN
+========================================= */
+
+function openGame(game) {
+
+    document.querySelector(".levels").style.display = "none";
+    document.querySelector(".video-section").style.display = "none";
+
+    document.querySelectorAll(".game-section").forEach(section => {
+        section.style.display = "none";
+    });
+
+    if(game === "memory") {
+        document.getElementById("memoryGame").style.display = "block";
+        startMemory();
+    }
+
+    if(game === "puzzle") {
+        document.getElementById("puzzleGame").style.display = "block";
+        startPuzzle();
+    }
+
+    if(game === "sentence") {
+        document.getElementById("sentenceGame").style.display = "block";
+        startSentence();
+    }
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+function closeGames() {
+
+    document.querySelectorAll(".game-section").forEach(section => {
+        section.style.display = "none";
+    });
+
+    document.querySelector(".levels").style.display = "block";
+    document.querySelector(".video-section").style.display = "block";
+
+    window.scrollTo({
+        top: document.querySelector(".levels").offsetTop,
+        behavior: "smooth"
+    });
+}
+
+
+/* =========================================
+   NIVEL 1 - MEMORIA
+========================================= */
+
+const symbols = [
+    "🍎","🍎",
+    "🚀","🚀",
+    "⭐","⭐",
+    "🎮","🎮",
+    "🐱","🐱",
+    "🌎","🌎",
+    "⚽","⚽",
+    "🎵","🎵"
+];
+
+let firstCard = null;
+let secondCard = null;
+let lockBoard = false;
+let moves = 0;
+let pairs = 0;
+
+
+function startMemory() {
+
+    const board = document.getElementById("memoryBoard");
+
+    board.innerHTML = "";
+
+    firstCard = null;
+    secondCard = null;
+    lockBoard = false;
+    moves = 0;
+    pairs = 0;
+
+    document.getElementById("moves").textContent = moves;
+    document.getElementById("pairs").textContent = pairs;
+    document.getElementById("memoryMessage").innerHTML = "";
+
+    let shuffled = [...symbols].sort(() => Math.random() - 0.5);
+
+    shuffled.forEach(symbol => {
+
+        const card = document.createElement("div");
+
+        card.className = "memory-card";
+
+        card.dataset.symbol = symbol;
+
+        card.innerHTML = symbol;
+
+        card.onclick = () => flipCard(card);
+
+        board.appendChild(card);
+    });
+}
+
+
+function flipCard(card) {
+
+    if(
+        lockBoard ||
+        card === firstCard ||
+        card.classList.contains("matched")
+    ) {
+        return;
+    }
+
+    card.classList.add("flipped");
+
+    if(!firstCard) {
+
+        firstCard = card;
+
+        return;
+    }
+
+    secondCard = card;
+
+    moves++;
+
+    document.getElementById("moves").textContent = moves;
+
+    checkMatch();
+}
+
+
+function checkMatch() {
+
+    const match =
+        firstCard.dataset.symbol === secondCard.dataset.symbol;
+
+    if(match) {
+
+        firstCard.classList.add("matched");
+        secondCard.classList.add("matched");
+
+        pairs++;
+
+        document.getElementById("pairs").textContent = pairs;
+
+        resetCards();
+
+        if(pairs === 8) {
+
+            document.getElementById("memoryMessage").innerHTML =
+                '<div class="success">🎉 ¡Nivel completado!</div>';
+        }
+
+    } else {
+
+        lockBoard = true;
+
+        setTimeout(() => {
+
+            firstCard.classList.remove("flipped");
+            secondCard.classList.remove("flipped");
+
+            resetCards();
+
+        }, 900);
+    }
+}
+
+
+function resetCards() {
+
+    firstCard = null;
+    secondCard = null;
+    lockBoard = false;
+}
+
+
+/* =========================================
+   NIVEL 2 - ROMPECABEZAS
+========================================= */
+
+let puzzlePieces = [];
+
+
+function startPuzzle() {
+
+    const board = document.getElementById("puzzleBoard");
+
+    board.innerHTML = "";
+
+    document.getElementById("puzzleMessage").innerHTML = "";
+
+    puzzlePieces = [];
+
+    for(let i = 0; i < 9; i++) {
+
+        puzzlePieces.push(i);
+    }
+
+    puzzlePieces.sort(() => Math.random() - 0.5);
+
+    puzzlePieces.forEach((position, index) => {
+
+        const piece = document.createElement("div");
+
+        piece.className = "puzzle-piece";
+
+        piece.draggable = true;
+
+        const x = position % 3;
+        const y = Math.floor(position / 3);
+
+        piece.style.backgroundImage =
+            "url('https://picsum.photos/300/300')";
+
+        piece.style.backgroundPosition =
+            `${x * 50}% ${y * 50}%`;
+
+        piece.dataset.position = position;
+
+        piece.addEventListener("dragstart", dragStart);
+        piece.addEventListener("dragover", dragOver);
+        piece.addEventListener("drop", dropPiece);
+
+        board.appendChild(piece);
+    });
+}
+
+
+let draggedPiece = null;
+
+
+function dragStart(e) {
+
+    draggedPiece = e.target;
+}
+
+
+function dragOver(e) {
+
+    e.preventDefault();
+}
+
+
+function dropPiece(e) {
+
+    e.preventDefault();
+
+    const target = e.target;
+
+    if(
+        target.classList.contains("puzzle-piece") &&
+        target !== draggedPiece
+    ) {
+
+        const board = document.getElementById("puzzleBoard");
+
+        const pieces = [...board.children];
+
+        const draggedIndex = pieces.indexOf(draggedPiece);
+        const targetIndex = pieces.indexOf(target);
+
+        if(draggedIndex < targetIndex) {
+
+            board.insertBefore(
+                draggedPiece,
+                target.nextSibling
+            );
+
+        } else {
+
+            board.insertBefore(
+                draggedPiece,
+                target
+            );
+        }
+
+        checkPuzzle();
+    }
+}
+
+
+function checkPuzzle() {
+
+    const pieces =
+        [...document.querySelectorAll(".puzzle-piece")];
+
+    const correct =
+        pieces.every((piece, index) =>
+            Number(piece.dataset.position) === index
+        );
+
+    if(correct) {
+
+        document.getElementById("puzzleMessage").innerHTML =
+            '<div class="success">🎉 ¡Rompecabezas completado!</div>';
+    }
+}
+
+
+/* =========================================
+   NIVEL 3 - FRASES
+========================================= */
+
+const sentenceData = [
+
+    {
+        words: ["El", "gato", "duerme", "en", "la", "casa"],
+        answer: "El gato duerme en la casa"
+    },
+
+    {
+        words: ["Me", "gusta", "jugar", "a", "los", "videojuegos"],
+        answer: "Me gusta jugar a los videojuegos"
+    },
+
+    {
+        words: ["Hoy", "es", "un", "día", "muy", "lindo"],
+        answer: "Hoy es un día muy lindo"
+    }
+
+];
+
+let currentSentence = null;
+let selectedWords = [];
+
+
+function startSentence() {
+
+    currentSentence =
+        sentenceData[
+            Math.floor(Math.random() * sentenceData.length)
+        ];
+
+    selectedWords = [];
+
+    const container =
+        document.getElementById("sentenceWords");
+
+    container.innerHTML = "";
+
+    document.getElementById("sentence").innerHTML = "";
+
+    document.getElementById("sentenceMessage").innerHTML = "";
+
+    const shuffled =
+        [...currentSentence.words]
+        .sort(() => Math.random() - 0.5);
+
+    shuffled.forEach(word => {
+
+        const button = document.createElement("div");
+
+        button.className = "word";
+
+        button.textContent = word;
+
+        button.onclick = () => selectWord(button, word);
+
+        container.appendChild(button);
+    });
+}
+
+
+function selectWord(element, word) {
+
+    if(element.style.opacity === "0.4") {
+        return;
+    }
+
+    element.style.opacity = "0.4";
+
+    selectedWords.push(word);
+
+    const selected =
+        document.createElement("div");
+
+    selected.className = "word";
+
+    selected.textContent = word;
+
+    document.getElementById("sentence").appendChild(selected);
+}
+
+
+function checkSentence() {
+
+    const result =
+        selectedWords.join(" ");
+
+    if(result === currentSentence.answer) {
+
+        document.getElementById("sentenceMessage").innerHTML =
+            '<div class="success">🎉 ¡Correcto! Frase completada.</div>';
+
+    } else {
+
+        document.getElementById("sentenceMessage").innerHTML =
+            '<div style="color:#e05252;margin:20px;font-weight:bold;">❌ Todavía no. ¡Intentá nuevamente!</div>';
+    }
+}
+
+
+/* Iniciar memoria al cargar */
+
+startMemory();
+
+</script>
+
+</body>
+</html>
