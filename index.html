@@ -1,1215 +1,318 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Desafío Mental</title>
-
-<style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    background: #020207;
-    color: #ffffff;
-    overflow-x: hidden;
-}
-
-/* ---------- ENCABEZADO ---------- */
-
-header {
-    min-height: 650px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 50px 20px;
-    background:
-        radial-gradient(circle at 10% 20%, #e9f2ff 0, transparent 25%),
-        radial-gradient(circle at 90% 80%, #f1e9ff 0, transparent 25%),
-        #fff;
-}
-
-.hero {
-    max-width: 900px;
-}
-
-.badge {
-    display: inline-block;
-    background: #f0edff;
-    color: #6646e8;
-    padding: 10px 18px;
-    border-radius: 30px;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-.hero h1 {
-    font-size: clamp(45px, 8vw, 85px);
-    line-height: 0.95;
-    margin-bottom: 25px;
-    background: linear-gradient(90deg, #6646e8, #3976ff);
-    -webkit-background-clip: text;
-    color: transparent;
-}
-
-.hero p {
-    font-size: 20px;
-    color: #666;
-    max-width: 650px;
-    margin: auto;
-    line-height: 1.6;
-}
-
-.scroll {
-    margin-top: 50px;
-    color: #888;
-}
-
-/* ---------- VIDEO ---------- */
-
-.video-section {
-    padding: 80px 20px;
-    background: #f8f9fc;
-    text-align: center;
-}
-
-.section-title {
-    font-size: 42px;
-    margin-bottom: 15px;
-}
-
-.section-subtitle {
-    color: #777;
-    margin-bottom: 40px;
-    font-size: 18px;
-}
-
-.video-container {
-    max-width: 900px;
-    margin: auto;
-    border-radius: 25px;
-    overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0,0,0,.12);
-    background: #000;
-}
-
-video {
-    width: 100%;
-    display: block;
-}
-
-/* ---------- NIVELES ---------- */
-
-.levels {
-    padding: 90px 20px;
-    max-width: 1200px;
-    margin: auto;
-    text-align: center;
-}
-
-.levels-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 25px;
-    margin-top: 50px;
-}
-
-.card {
-    background: white;
-    border: 1px solid #eee;
-    border-radius: 25px;
-    padding: 35px 25px;
-    text-align: left;
-    box-shadow: 0 10px 35px rgba(0,0,0,.07);
-    transition: .3s;
-}
-
-.card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 50px rgba(0,0,0,.12);
-}
-
-.icon {
-    font-size: 50px;
-    margin-bottom: 20px;
-}
-
-.level {
-    color: #7655ee;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.card h3 {
-    font-size: 27px;
-    margin-bottom: 15px;
-}
-
-.card p {
-    color: #777;
-    line-height: 1.6;
-    min-height: 80px;
-}
-
-button {
-    border: none;
-    cursor: pointer;
-    padding: 14px 22px;
-    border-radius: 14px;
-    font-size: 16px;
-    font-weight: bold;
-    transition: .2s;
-}
-
-.play-btn {
-    width: 100%;
-    margin-top: 20px;
-    background: #6646e8;
-    color: white;
-}
-
-.play-btn:hover {
-    background: #5132d4;
-    transform: scale(1.02);
-}
-
-/* ---------- JUEGOS ---------- */
-
-.game-section {
-    display: none;
-    padding: 80px 20px;
-    background: #f7f8fc;
-    min-height: 700px;
-}
-
-.game {
-    max-width: 950px;
-    margin: auto;
-    text-align: center;
-}
-
-.game h2 {
-    font-size: 42px;
-    margin-bottom: 10px;
-}
-
-.instructions {
-    color: #777;
-    margin-bottom: 25px;
-}
-
-.stats {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap;
-    margin-bottom: 30px;
-}
-
-.stat {
-    background: white;
-    padding: 12px 20px;
-    border-radius: 12px;
-    box-shadow: 0 5px 20px rgba(0,0,0,.07);
-}
-
-/* ---------- MEMORIA ---------- */
-
-.memory-board {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    max-width: 600px;
-    margin: auto;
-}
-
-.memory-card {
-    height: 130px;
-    background: #6646e8;
-    border-radius: 18px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 45px;
-    color: transparent;
-    transition: .3s;
-}
-
-.memory-card.flipped,
-.memory-card.matched {
-    background: white;
-    color: #222;
-    border: 3px solid #6646e8;
-}
-
-.memory-card.matched {
-    border-color: #37b978;
-}
-
-/* ---------- ROMPECABEZAS ---------- */
-
-.puzzle-area {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 25px;
-}
-
-.reference {
-    width: 180px;
-    border-radius: 15px;
-    box-shadow: 0 5px 20px rgba(0,0,0,.15);
-}
-
-.puzzle-board {
-    display: grid;
-    grid-template-columns: repeat(3, 100px);
-    grid-template-rows: repeat(3, 100px);
-    gap: 3px;
-    background: #222;
-    padding: 3px;
-    border-radius: 10px;
-}
-
-.puzzle-piece {
-    width: 100px;
-    height: 100px;
-    background-size: 300px 300px;
-    cursor: grab;
-}
-
-/* ---------- FRASES ---------- */
-
-.words-container {
-    max-width: 750px;
-    min-height: 100px;
-    margin: 30px auto;
-    padding: 20px;
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 5px 25px rgba(0,0,0,.08);
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.word {
-    background: #6646e8;
-    color: white;
-    padding: 12px 18px;
-    border-radius: 12px;
-    cursor: grab;
-    font-weight: bold;
-}
-
-#sentence {
-    min-height: 80px;
-    max-width: 750px;
-    margin: auto;
-    background: #fff;
-    border: 2px dashed #bbb;
-    border-radius: 20px;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.success {
-    margin: 20px;
-    font-size: 24px;
-    font-weight: bold;
-    color: #25a866;
-}
-
-.back-btn {
-    margin-top: 30px;
-    background: #222;
-    color: white;
-}
-
-footer {
-    text-align: center;
-    padding: 40px;
-    background: #171717;
-    color: white;
-}
-
-/* ---------- RESPONSIVE ---------- */
-
-@media(max-width: 800px) {
-    .levels-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .memory-board {
-        grid-template-columns: repeat(4, 1fr);
-    }
-
-    .memory-card {
-        height: 90px;
-    }
-
-    .puzzle-board {
-        transform: scale(.85);
-    }
-}
-
-/* ---------- FONDO ESPACIAL CON ESTRELLAS DE 5 PUNTAS ---------- */
-
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: -2;
-
-    background-image:
-        radial-gradient(circle at 15% 20%, rgba(120, 80, 255, .16), transparent 28%),
-        radial-gradient(circle at 85% 75%, rgba(50, 110, 255, .12), transparent 30%),
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='500' height='500' viewBox='0 0 500 500'%3E%3Cg fill='white'%3E%3Cpath d='M55 22l6 18 19 6-19 6-6 18-6-18-19-6 19-6z'/%3E%3Cpath d='M190 75l4 12 13 4-13 4-4 12-4-12-13-4 13-4z'/%3E%3Cpath d='M350 38l8 23 24 8-24 8-8 23-8-23-24-8 24-8z'/%3E%3Cpath d='M455 150l5 15 16 5-16 5-5 15-5-15-16-5 16-5z'/%3E%3Cpath d='M95 205l7 21 22 7-22 7-7 21-7-21-22-7 22-7z'/%3E%3Cpath d='M250 245l5 16 17 5-17 5-5 16-5-16-17-5 17-5z'/%3E%3Cpath d='M395 300l8 24 25 8-25 8-8 24-8-24-25-8 25-8z'/%3E%3Cpath d='M180 370l6 18 19 6-19 6-6 18-6-18-19-6 19-6z'/%3E%3Cpath d='M315 445l7 21 22 7-22 7-7 21-7-21-22-7 22-7z'/%3E%3Cpath d='M465 420l4 12 13 4-13 4-4 12-4-12-13-4 13-4z'/%3E%3C/g%3E%3C/svg%3E");
-
-    background-size: auto, auto, 500px 500px;
-    animation: starsMove 35s linear infinite;
-}
-
-body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: -3;
-    background:
-        radial-gradient(circle at 20% 20%, rgba(105,70,255,.14), transparent 32%),
-        radial-gradient(circle at 80% 70%, rgba(40,110,255,.10), transparent 32%);
-}
-
-@keyframes starsMove {
-    from { transform: translateY(0); }
-    to { transform: translateY(500px); }
-}
-
-/* ---------- AJUSTES OSCUROS ---------- */
-
-header {
-    background: transparent;
-}
-
-.hero p {
-    color: #c7c7d5;
-}
-
-.video-section {
-    background: transparent;
-}
-
-.video-container {
-    box-shadow: 0 20px 60px rgba(0,0,0,.45);
-    border: 1px solid rgba(130,100,255,.25);
-}
-
-.levels {
-    color: white;
-}
-
-.card {
-    background: rgba(12, 12, 22, .90);
-    border-color: rgba(130,100,255,.30);
-    box-shadow: 0 10px 35px rgba(0,0,0,.35);
-}
-
-.card p,
-.section-subtitle,
-.instructions {
-    color: #b9b9c8;
-}
-
-.game-section {
-    background: transparent;
-}
-
-.stat {
-    background: rgba(15,15,27,.92);
-    color: white;
-}
-
-.words-container,
-#sentence {
-    background: rgba(15,15,27,.92);
-    color: white;
-}
-
-#sentence {
-    border-color: #6155b8;
-}
-
-footer {
-    background: rgba(5,5,10,.95);
-}
-
-
-/* PLANETAS DECORATIVOS */
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: -2;
-    pointer-events: none;
-    background-image:
-        radial-gradient(circle at 84% 18%, rgba(255,255,255,.95) 0 1px, transparent 2px),
-        radial-gradient(circle at 16% 27%, rgba(255,255,255,.9) 0 1.5px, transparent 2.5px),
-        radial-gradient(circle at 72% 70%, rgba(255,255,255,.85) 0 1px, transparent 2px),
-        radial-gradient(circle at 31% 82%, rgba(255,255,255,.9) 0 1.5px, transparent 2.5px),
-        radial-gradient(circle at 50% 48%, rgba(255,255,255,.8) 0 1px, transparent 2px);
-    background-size: 240px 240px, 310px 310px, 280px 280px, 360px 360px, 190px 190px;
-    animation: starMove 22s linear infinite;
-}
-
-body::after {
-    content: "";
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background:
-        radial-gradient(circle at 14% 18%, rgba(100, 150, 255, .12), transparent 24%),
-        radial-gradient(circle at 88% 76%, rgba(150, 80, 255, .12), transparent 25%);
-}
-
-/* Planeta 1: azul */
-body {
-    position: relative;
-    overflow-x: hidden;
-}
-
-body .planet-space-1,
-body .planet-space-2 {
-    position: fixed;
-    display: block;
-    pointer-events: none;
-    z-index: -1;
-    border-radius: 50%;
-}
-
-body .planet-space-1 {
-    width: 210px;
-    height: 210px;
-    right: 5%;
-    top: 20%;
-    background:
-        radial-gradient(circle at 32% 28%, rgba(255,255,255,.55) 0 3%, transparent 4%),
-        radial-gradient(circle at 62% 63%, rgba(20,55,130,.7) 0 12%, transparent 13%),
-        radial-gradient(circle at 40% 70%, rgba(30,100,170,.75) 0 15%, transparent 16%),
-        linear-gradient(135deg, #8ed8ff 0%, #287bc4 42%, #10245c 100%);
-    box-shadow: 0 0 45px rgba(65, 155, 255, .45), inset -30px -25px 45px rgba(0,0,0,.5);
-}
-
-body .planet-space-2 {
-    width: 135px;
-    height: 135px;
-    left: 5%;
-    bottom: 18%;
-    background:
-        radial-gradient(circle at 35% 30%, rgba(255,255,255,.35) 0 3%, transparent 4%),
-        radial-gradient(circle at 58% 62%, rgba(110,35,25,.7) 0 13%, transparent 14%),
-        radial-gradient(circle at 35% 70%, rgba(180,70,35,.65) 0 16%, transparent 17%),
-        linear-gradient(145deg, #f2a36e 0%, #bd4d38 48%, #40141d 100%);
-    box-shadow: 0 0 35px rgba(240, 90, 55, .3), inset -22px -18px 30px rgba(0,0,0,.5);
-}
-
-@media (max-width: 800px) {
-    body .planet-space-1 {
-        width: 120px;
-        height: 120px;
-        right: -20px;
-        top: 16%;
-    }
-    body .planet-space-2 {
-        width: 85px;
-        height: 85px;
-        left: -15px;
-        bottom: 12%;
-    }
-}
-
-</style>
-</head>
-
-<body>
-    <span class="planet-space-1" aria-hidden="true"></span>
-    <span class="planet-space-2" aria-hidden="true"></span>
-
-<!-- HERO -->
-
-<header>
-    <div class="hero">
-        <div class="badge">🧠 JUEGOS MENTALES</div>
-
-        <h1>DESAFÍO<br>MENTAL</h1>
-
-        <p>
-            Poné a prueba tu memoria, tu lógica y tu capacidad
-            para resolver problemas.
-        </p>
-
-        <div class="scroll">
-            ↓ Descubrí los niveles
-        </div>
-    </div>
-</header>
-
-
-<!-- VIDEO -->
-
-<section class="video-section">
-
-    <h2 class="section-title">¡Bienvenido al desafío!</h2>
-
-    <p class="section-subtitle">
-        Preparáte para superar tres niveles diferentes.
-    </p>
-
-    <div class="video-container">
-
-        <!-- CAMBIÁ "presentacion.mp4" POR TU VIDEO -->
-
-        <video controls>
-            <source src="presentacion.mp4" type="video/mp4">
-            Tu navegador no puede reproducir este video.
-        </video>
-
-    </div>
-
-</section>
-
-
-<!-- NIVELES -->
-
-<section class="levels" id="niveles">
-
-    <h2 class="section-title">Elegí tu nivel</h2>
-
-    <p class="section-subtitle">
-        Tres desafíos. Tres habilidades diferentes.
-    </p>
-
-    <div class="levels-grid">
-
-        <!-- NIVEL 1 -->
-
-        <div class="card">
-
-            <div class="icon">🧠</div>
-
-            <div class="level">NIVEL 1</div>
-
-            <h3>Memoria</h3>
-
-            <p>
-                Encontrá las parejas iguales entre todas las cartas
-                antes de terminar el desafío.
-            </p>
-
-            <button class="play-btn" onclick="openGame('memory')">
-                JUGAR NIVEL 1
-            </button>
-
-        </div>
-
-
-        <!-- NIVEL 2 -->
-
-        <div class="card">
-
-            <div class="icon">🧩</div>
-
-            <div class="level">NIVEL 2</div>
-
-            <h3>Rompecabezas</h3>
-
-            <p>
-                Armá correctamente la imagen colocando cada pieza
-                en su lugar.
-            </p>
-
-            <button class="play-btn" onclick="openGame('puzzle')">
-                JUGAR NIVEL 2
-            </button>
-
-        </div>
-
-
-        <!-- NIVEL 3 -->
-
-        <div class="card">
-
-            <div class="icon">🔤</div>
-
-            <div class="level">NIVEL 3</div>
-
-            <h3>Descifrá la frase</h3>
-
-            <p>
-                Ordená las palabras desordenadas y formá una frase
-                que tenga sentido.
-            </p>
-
-            <button class="play-btn" onclick="openGame('sentence')">
-                JUGAR NIVEL 3
-            </button>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- ================= MEMORIA ================= -->
-
-<section class="game-section" id="memoryGame">
-
-    <div class="game">
-
-        <h2>🧠 Nivel 1 — Memoria</h2>
-
-        <p class="instructions">
-            Encontrá todas las parejas iguales.
-        </p>
-
-        <div class="stats">
-
-            <div class="stat">
-                Movimientos: <strong id="moves">0</strong>
-            </div>
-
-            <div class="stat">
-                Parejas: <strong id="pairs">0</strong>/8
-            </div>
-
-        </div>
-
-        <div class="memory-board" id="memoryBoard"></div>
-
-        <div id="memoryMessage"></div>
-
-        <button class="play-btn" onclick="startMemory()">
-            REINICIAR
-        </button>
-
-        <button class="back-btn" onclick="closeGames()">
-            VOLVER A LOS NIVELES
-        </button>
-
-    </div>
-
-</section>
-
-
-<!-- ================= ROMPECABEZAS ================= -->
-
-<section class="game-section" id="puzzleGame">
-
-    <div class="game">
-
-        <h2>🧩 Nivel 2 — Rompecabezas</h2>
-
-        <p class="instructions">
-            Arrastrá las piezas para ordenar la imagen.
-        </p>
-
-        <div class="puzzle-area">
-
-            <img
-                class="reference"
-                src="https://picsum.photos/300/300"
-                alt="Imagen de referencia"
-            >
-
-            <div class="puzzle-board" id="puzzleBoard"></div>
-
-        </div>
-
-        <div id="puzzleMessage"></div>
-
-        <button class="play-btn" onclick="startPuzzle()">
-            REINICIAR
-        </button>
-
-        <button class="back-btn" onclick="closeGames()">
-            VOLVER A LOS NIVELES
-        </button>
-
-    </div>
-
-</section>
-
-
-<!-- ================= FRASES ================= -->
-
-<section class="game-section" id="sentenceGame">
-
-    <div class="game">
-
-        <h2>🔤 Nivel 3 — Descifrá la frase</h2>
-
-        <p class="instructions">
-            Hacé clic en las palabras para formar una frase correcta.
-        </p>
-
-        <div id="sentenceWords" class="words-container"></div>
-
-        <h3>Tu frase:</h3>
-
-        <div id="sentence"></div>
-
-        <button class="play-btn" onclick="checkSentence()">
-            COMPROBAR
-        </button>
-
-        <div id="sentenceMessage"></div>
-
-        <button class="back-btn" onclick="closeGames()">
-            VOLVER A LOS NIVELES
-        </button>
-
-    </div>
-
-</section>
-
-
-<footer>
-    <h3>DESAFÍO MENTAL</h3>
-    <p>Aprendé, jugá y superá tus límites.</p>
-</footer>
-
-
+<!-- ADD-ON DESAFÍO MENTAL: pegar justo antes de </body>, DESPUÉS de tu <script> original. No modifica nada de lo existente. -->
 <script>
+(()=>{
+const $$=s=>document.querySelector(s),RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const shuf=a=>[...a].sort(()=>Math.random()-.5);
 
-/* =========================================
-   NAVEGACIÓN
-========================================= */
+/* ========== AUDIO GLOBAL ========== */
+let ac,muted=false;
+const beep=(f,d=.1,t='square',v=.05,w=0)=>{if(muted)return;try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain(),s=ac.currentTime+w;o.type=t;o.frequency.value=f;g.gain.setValueAtTime(v,s);g.gain.exponentialRampToValueAtTime(.0001,s+d);o.connect(g);g.connect(ac.destination);o.start(s);o.stop(s+d)}catch(e){}};
+const win=()=>[523,659,784,1046].forEach((f,k)=>beep(f,.18,'triangle',.06,k*.09));
+const fail=()=>beep(110,.3,'sawtooth');
+const sfx=document.createElement('button');sfx.id='sfxBtn';sfx.textContent='🔊';sfx.setAttribute('aria-label','Sonido');
+const toggleMute=()=>{muted=!muted;sfx.textContent=muted?'🔇':'🔊';const m=$$('#aMute');if(m)m.textContent='Sonido: '+(muted?'no':'sí')};
+sfx.onclick=toggleMute;document.body.appendChild(sfx);
 
-function openGame(game) {
+/* ========== CSS ========== */
+const css=`
+#sfxBtn{position:fixed;right:16px;bottom:16px;z-index:50;padding:10px 13px;border-radius:50%;background:rgba(15,15,27,.9);color:#fff;border:1px solid rgba(130,100,255,.5);font-size:18px}
+.gl{position:relative}
+.gl::before,.gl::after{content:attr(data-t);position:absolute;inset:0;white-space:pre-line;overflow:hidden}
+.gl::before{color:#ff2e88;transform:translateX(-3px);animation:gA 3s infinite steps(1)}
+.gl::after{color:#00f0ff;transform:translateX(3px);animation:gA 2.2s infinite steps(1) reverse}
+@keyframes gA{0%,88%,100%{clip-path:inset(0 0 100% 0)}90%{clip-path:inset(10% 0 60% 0)}93%{clip-path:inset(55% 0 20% 0)}96%{clip-path:inset(30% 0 45% 0)}}
+.gb header,.gb section,.gb footer{animation:gB .4s steps(2)}
+@keyframes gB{0%{transform:translate(4px,0);filter:hue-rotate(60deg) contrast(1.4)}30%{transform:translate(-6px,2px);filter:hue-rotate(-60deg)}60%{transform:translate(3px,-2px) skewX(3deg)}100%{transform:none;filter:none}}
+@keyframes abur{0%{transform:translate(4px,0);filter:hue-rotate(60deg) contrast(1.4)}25%{transform:translate(-6px,2px);filter:hue-rotate(-60deg)}50%{transform:translate(3px,-2px) skewX(4deg)}100%{transform:none;filter:none}}
+@keyframes ash{20%{transform:translateX(-8px)}60%{transform:translateX(8px)}}
+.sh{position:fixed;top:-10px;width:2px;height:90px;z-index:-1;pointer-events:none;background:linear-gradient(transparent,#fff);opacity:0;animation:sht 8s linear infinite}
+@keyframes sht{0%{opacity:0;transform:translate(0,0) rotate(45deg)}3%{opacity:1}13%{opacity:0;transform:translate(-520px,520px) rotate(45deg)}100%{opacity:0}}
+@keyframes pf{to{transform:translateY(-18px)}}
+.planet-space-1{animation:pf 9s ease-in-out infinite alternate}
+.planet-space-2{animation:pf 12s ease-in-out infinite alternate-reverse}
+.card:hover{box-shadow:0 20px 50px rgba(0,0,0,.4),0 0 28px rgba(100,150,255,.35)}
+.play-btn:hover{box-shadow:0 0 18px #6646e8}
+@media(prefers-reduced-motion:reduce){.sh,.gl::before,.gl::after,.planet-space-1,.planet-space-2{animation:none!important}}
 
-    document.querySelector(".levels").style.display = "none";
-    document.querySelector(".video-section").style.display = "none";
-
-    document.querySelectorAll(".game-section").forEach(section => {
-        section.style.display = "none";
-    });
-
-    if(game === "memory") {
-        document.getElementById("memoryGame").style.display = "block";
-        startMemory();
-    }
-
-    if(game === "puzzle") {
-        document.getElementById("puzzleGame").style.display = "block";
-        startPuzzle();
-    }
-
-    if(game === "sentence") {
-        document.getElementById("sentenceGame").style.display = "block";
-        startSentence();
-    }
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
+/* ---- Sopa de letras ---- */
+#spGame{
+.sc{max-width:900px;margin:0 auto 20px;background:#fff;color:#26324a;border-radius:22px;padding:22px;box-shadow:0 8px 30px #0006}
+#spG{display:grid;grid-template-columns:repeat(15,1fr);gap:4px;max-width:650px;margin:18px auto;user-select:none;touch-action:none}
+.cell{aspect-ratio:1;padding:0;border-radius:7px;background:#eef4ff;font-weight:bold;font-size:clamp(11px,2.3vw,20px);color:#26324a}
+.cell.s{background:#b9a7ff;color:#fff}.cell.f{background:#8bd3dd;color:#fff}
+#spW{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.w{padding:7px 10px;background:#f0edff;border-radius:12px;font-size:14px}.w.d{text-decoration:line-through;background:#cceee8}
+#spM{text-align:center;font-weight:bold;min-height:24px}
 }
 
-
-function closeGames() {
-
-    document.querySelectorAll(".game-section").forEach(section => {
-        section.style.display = "none";
-    });
-
-    document.querySelector(".levels").style.display = "block";
-    document.querySelector(".video-section").style.display = "block";
-
-    window.scrollTo({
-        top: document.querySelector(".levels").offsetTop,
-        behavior: "smooth"
-    });
+/* ---- ASTRA-07 Memoria ---- */
+#amGame{
+.bd{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;max-width:700px;margin:18px auto}
+.mc{height:150px;border:2px solid #315f79;border-radius:14px;background:#081827;padding:0;cursor:pointer;perspective:800px}
+.mc.done{border-color:#37b978}
+.inner{height:100%;position:relative;transform-style:preserve-3d;transition:.45s}
+.mc.open .inner,.mc.done .inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:12px;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.back{background:radial-gradient(circle,#214d6b,#07121f);color:#70ddff;font:bold 13px monospace;letter-spacing:2px}
+.back span{border:1px solid #4d9fc1;padding:8px;border-radius:7px}
+.front{transform:rotateY(180deg);background:linear-gradient(145deg,#173750,#091827)}
+.draw{width:110px;height:110px;position:relative}
+.ship{width:110px;height:50px;position:absolute;top:30px;background:linear-gradient(#fff,#9fbccb);clip-path:polygon(0 65%,50% 0,100% 65%,82% 100%,18% 100%)}
+.window{position:absolute;width:36px;height:18px;border-radius:50%;background:#17658d;border:2px solid #9ceaff;left:37px;top:16px}
+.wing{position:absolute;width:30px;height:25px;background:#376c8c;bottom:-14px}.w1{left:7px;transform:skewX(-25deg)}.w2{right:7px;transform:skewX(25deg)}
+.signal{position:absolute;left:48px;top:55px;width:14px;height:45px;background:#d9f8ff;border-radius:5px}
+.signal:before,.signal:after{content:"";position:absolute;border:4px solid #62dcff;border-left-color:transparent;border-right-color:transparent;border-bottom-color:transparent;border-radius:50%;left:-40px;top:-22px;width:94px;height:70px}
+.signal:after{left:-23px;top:-6px;width:60px;height:45px}
+.dot{position:absolute;width:15px;height:15px;background:#a86cff;border-radius:50%;top:-18px;left:0}
+.clock{width:100px;height:100px;border-radius:50%;background:#183a55;border:8px solid #dcebf0;position:absolute;left:5px;top:5px}
+.clock:before{content:"";position:absolute;width:4px;height:34px;background:#fff;left:44px;top:18px}
+.clock:after{content:"";position:absolute;width:31px;height:4px;background:#fff;left:44px;top:49px;transform:rotate(30deg);transform-origin:left}
+.planet{width:92px;height:92px;border-radius:50%;position:absolute;left:9px;top:9px;background:radial-gradient(circle at 30% 25%,#9ee4f5,#3e7da0 55%,#20395f);box-shadow:inset -12px -8px 20px #10243f}
+.planet:before{content:"";position:absolute;width:135px;height:36px;border:5px solid #d9f8ff;border-radius:50%;left:-22px;top:29px;transform:rotate(-12deg)}
+.planet:after{content:"";position:absolute;width:38px;height:22px;background:#70aa77;border-radius:50%;left:20px;top:28px;box-shadow:30px 17px 0 #557f67}
+.brain{width:80px;height:82px;position:absolute;left:15px;top:12px;background:linear-gradient(135deg,#f3b6e7,#7c5cc2);border-radius:48%;border:4px solid #f0dcff}
+.brain:before{content:"";position:absolute;width:55px;height:20px;border-top:4px solid #ffd9f5;border-bottom:4px solid #ffd9f5;left:9px;top:25px;border-radius:50%}
+.ring{width:55px;height:55px;border:11px solid #e7b13e;border-radius:50%;position:absolute;left:10px;top:20px}
+.shaft{position:absolute;width:58px;height:11px;background:#d99e29;left:53px;top:65px;transform:rotate(42deg);border-radius:7px}
+.tooth{position:absolute;width:12px;height:23px;background:#d99e29;left:91px;top:76px;transform:rotate(42deg);border-radius:3px}
+.door{position:absolute;width:72px;height:95px;left:19px;top:5px;border:5px solid #8eb3c4;border-radius:9px;background:linear-gradient(#365a72,#142b40)}
+.door:before{content:"";position:absolute;width:48px;height:66px;left:7px;top:10px;border:3px solid #5dd8f5;border-radius:6px;background:#071827}
+.door:after{content:"";position:absolute;width:13px;height:13px;border-radius:50%;background:#a66cff;left:27px;top:37px;box-shadow:0 0 12px #66eaff}
+.head{position:absolute;width:48px;height:48px;border-radius:50%;background:#edf5f7;border:4px solid #698697;left:31px;top:0}
+.glass{position:absolute;width:34px;height:24px;border-radius:8px;background:#215578;border:3px solid #72ddff;left:38px;top:8px}
+.body{position:absolute;width:52px;height:58px;border-radius:15px;background:linear-gradient(#fff,#a7c0cd);border:4px solid #698697;left:29px;top:44px}
+.pack{position:absolute;width:18px;height:36px;background:#668ca1;left:19px;top:55px;border-radius:5px}
+.arm{position:absolute;width:39px;height:11px;background:#dbe8ed;border-radius:8px;top:58px}.arm1{left:3px;transform:rotate(30deg)}.arm2{right:3px;transform:rotate(-30deg)}
+.panel{max-width:700px;margin:auto;background:#071521;border:1px solid #294b62;border-radius:12px;padding:14px}
+.win{margin-top:13px;border:1px solid #6bdcff;border-radius:10px;padding:13px;background:#092638}
+.code{font:800 20px monospace;color:#70e1ff;margin:8px}
+@media(max-width:520px){.mc{height:105px}.draw{transform:scale(.72)}.bd{gap:7px}}
 }
 
+/* ---- ASTRA-07 La identidad perdida ---- */
+#advGame{
+.box{--cy:#5fd3ff;--tx:#d6e6f5;--mu:#7f95ab;--ok:#5df2a0;--er:#ff5d73;--am:#ffb347;max-width:880px;margin:auto;background:rgba(4,7,13,.88);color:var(--tx);font:16px/1.6 ui-monospace,Consolas,Menlo,monospace;text-align:left;border:1px solid rgba(130,100,255,.3);border-radius:16px;padding:22px;position:relative;overflow:hidden}
+.box::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(transparent 0 2px,#0004 3px)}
+.box.burst{animation:abur .45s steps(2)}
+[hidden]{display:none!important}
+.ah{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:flex-end}
+h1{margin:0;font-size:clamp(2.2rem,8vw,3.6rem);letter-spacing:.12em;line-height:1;color:var(--cy);text-shadow:0 0 18px #5fd3ff88}
+.sub{margin:6px 0 0;color:var(--mu);font-size:.9rem}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+#aBeacon{font-size:.8rem;color:var(--am)}
+#aSeg{display:flex;gap:6px;margin:18px 0 4px}
+#aSeg i{flex:1;height:8px;background:#122436;border-radius:2px;transition:.5s}
+#aSeg i.on{background:var(--cy);box-shadow:0 0 12px var(--cy)}
+#aCnt{font-size:.8rem;color:var(--mu)}
+.panel{background:#0a1320ee;border:1px solid #1f3a52;border-radius:10px;padding:22px;margin:16px 0;box-shadow:inset 0 0 40px #5fd3ff08}
+h2{margin:0 0 12px;color:var(--cy);font-size:1.25rem}
+p{margin:.6em 0}
+.mu{color:var(--mu)}.good{color:var(--ok)}.bad{color:var(--er)}.am{color:var(--am)}
+button{background:#12304490;color:var(--tx);border:1px solid #3d83a8;border-radius:8px;padding:9px 16px;font-weight:400}
+button:hover:not(:disabled){background:#1d4d6b;box-shadow:0 0 14px #5fd3ff55}
+button:disabled{opacity:.4;cursor:default}
+.pri{background:var(--cy);color:#04121c;border-color:var(--cy);font-weight:700}
+.pri:hover:not(:disabled){background:#8fe3ff}
+.ghost{background:none;border-color:transparent;color:var(--mu);padding-left:0}
+input{font:inherit;background:#050a12;color:#fff;border:1px solid #456075;border-radius:8px;padding:10px 12px;min-width:0;flex:1 1 200px}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.clue{background:#03060b;border-left:3px solid var(--cy);border-radius:4px;padding:14px;white-space:pre-wrap;margin:12px 0;font:inherit;min-height:3em}
+.rg{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:14px}
+.rc{display:flex;flex-direction:column;gap:4px;text-align:left;padding:16px;background:#0c1a2a}
+.rc small,.rc span{color:var(--mu);font-size:.85rem}
+.rc.done{border-color:var(--ok)}.rc.done span{color:var(--ok)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.msg{min-height:1.6em}
+.shake{animation:ash .35s}
+.big{display:inline-block;font-size:clamp(1.3rem,5vw,2rem);color:var(--er);margin-top:26px;font-weight:700}
+}`;
+const st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
 
-/* =========================================
-   NIVEL 1 - MEMORIA
-========================================= */
+/* ========== EFECTOS ESPACIALES ========== */
+const h1=$$('.hero h1');if(h1){h1.classList.add('gl');h1.dataset.t='DESAFÍO\nMENTAL'}
+[8,35,62,88].forEach((l,i)=>{const s=document.createElement('div');s.className='sh';s.style.left=l+'%';s.style.animationDelay=(i*2.3)+'s';document.body.appendChild(s)});
+if(!RM)setInterval(()=>{document.body.classList.add('gb');beep(80,.4,'sawtooth',.04);setTimeout(()=>document.body.classList.remove('gb'),450)},17000);
+document.addEventListener('click',e=>{const t=e.target.closest('.play-btn,.back-btn,.memory-card,.puzzle-piece,.word');if(t)beep(t.matches('.memory-card,.puzzle-piece,.word')?660:440,.07,'triangle')});
+document.addEventListener('mouseover',e=>{const t=e.target.closest('.levels .card');if(t&&!t.contains(e.relatedTarget))beep(900,.03,'sine',.02)});
+['memoryMessage','puzzleMessage','sentenceMessage'].forEach(id=>{const el=document.getElementById(id);if(el)new MutationObserver(()=>{const t=el.textContent;if(t.includes('🎉'))win();else if(t.includes('❌'))fail()}).observe(el,{childList:true})});
 
-const symbols = [
-    "🍎","🍎",
-    "🚀","🚀",
-    "⭐","⭐",
-    "🎮","🎮",
-    "🐱","🐱",
-    "🌎","🌎",
-    "⚽","⚽",
-    "🎵","🎵"
+/* ========== INYECTAR TARJETAS Y SECCIONES ========== */
+const card=(ic,n,t,d,g)=>`<div class="card"><div class="icon">${ic}</div><div class="level">NIVEL ${n}</div><h3>${t}</h3><p>${d}</p><button class="play-btn" onclick="openGame('${g}')">JUGAR NIVEL ${n}</button></div>`;
+$$('.levels-grid').insertAdjacentHTML('beforeend',
+ card('🔎',4,'Sopa de letras','Encontrá las palabras clave de la misión ASTRA-07 en cualquier dirección.','sopa')+
+ card('🚀',5,'Memoria perdida','Recuperá los 8 registros de la nave Astra-07 emparejando las cartas.','astra')+
+ card('🛰️',6,'La identidad perdida','Resolvé cuatro enigmas y descubrí quién era el astronauta.','adv'));
+const back='<button class="back-btn" onclick="closeGames()">VOLVER A LOS NIVELES</button>';
+const sec=(id,h)=>`<section class="game-section" id="${id}"><div class="game">${h}${back}</div></section>`;
+$$('footer').insertAdjacentHTML('beforebegin',
+ sec('spGame','<h2>🔎 Nivel 4 — Sopa de letras</h2><p class="instructions">Encontrá las palabras clave de la historia. Arrastrá para seleccionar, en cualquier dirección.</p><div class="sc"><div id="spW"></div><div id="spG"></div><div id="spM"></div></div><button class="play-btn" id="spR">REINICIAR</button>')+
+ sec('amGame','<h2>🚀 Nivel 5 — ASTRA-07: Memoria perdida</h2><p class="instructions">Sistema de recuperación A-01. Elegí dos cartas para comenzar.</p><div class="stats"><div class="stat">Parejas: <strong id="amP">0/8</strong></div><div class="stat">Intentos: <strong id="amT">0</strong></div></div><div class="bd" id="amB"></div><div class="panel"><div id="amM"></div></div><div class="panel win" id="amW" hidden><b>MEMORIA RESTAURADA</b><p>Todos los registros fueron recuperados.</p><div class="code">IDENTIDAD → A-01</div><p>La Astra-07 ha regresado... pero no hay nadie a bordo.</p></div><button class="play-btn" id="amR">REINICIAR MISIÓN</button>')+
+ sec('advGame','<div class="box"><div class="ah"><div><h1 class="gl" data-t="ASTRA-07">ASTRA-07</h1><p class="sub">La identidad perdida, año 2164</p></div><div class="tools"><span id="aBeacon">próxima señal en 17 s</span><button id="aMute">Sonido: sí</button><button id="aReset">↺ Reiniciar</button></div></div><div id="aSeg"><i></i><i></i><i></i><i></i></div><div id="aCnt"></div><div id="aView"></div></div>'));
+
+/* ========== NIVEL 4: SOPA ========== */
+const SG="IDENTIDADYNXOJL AMUUULKZAHAPRUO QMNOISIMSMNLTXO ESPACIOEKZEASMF RNEZDCSHPFXNIME AJPCITDCCEUEGNV 1RIRAICIIYSTELB 7STCLARBMUNARAS XPICOORDENADASR UOBVUPHYTIERRAK NCTXFSENALIAVOY NASTRONAUTASZJH SEYAPHMDQNPTSSF PWKHJRNVYLCRBUK SODREUCERNZAQXR".split(' ');
+const SW=["ASTRA","ASTRONAUTA","UMBRAL","SENAL","PLANETA","ESTACION","RECUERDOS","IDENTIDAD","NEXUS","REGISTRO","COORDENADAS","ESPACIO","TIERRA","MISION","A17"];
+const spG=$$('#spG'),spW=$$('#spW'),spM=$$('#spM'),wEl={};let sel=[],found=new Set(),drag=false;
+SW.forEach(w=>{const e=document.createElement('span');e.className='w';e.textContent=w;spW.appendChild(e);wEl[w]=e});
+const cells=[];
+for(let r=0;r<15;r++)for(let c=0;c<15;c++){const b=document.createElement('button');b.className='cell';b.textContent=SG[r][c];b.dataset.r=r;b.dataset.c=c;
+ const start=()=>{drag=true;sel=[b];b.classList.add('s')},over=()=>{if(drag&&!sel.includes(b)){sel.push(b);b.classList.add('s');beep(700,.03,'sine',.02)}};
+ b.onmousedown=start;b.onmouseenter=over;b.addEventListener('touchstart',e=>{e.preventDefault();start()},{passive:false});spG.appendChild(b);cells.push(b)}
+spG.addEventListener('touchmove',e=>{e.preventDefault();const t=e.touches[0],el=document.elementFromPoint(t.clientX,t.clientY);if(drag&&el&&el.classList.contains('cell')&&!sel.includes(el)){sel.push(el);el.classList.add('s')}},{passive:false});
+function spCheck(){
+ if(!drag)return;drag=false;if(!sel.length)return;
+ const s=sel.map(x=>SG[+x.dataset.r][+x.dataset.c]).join(''),rv=[...s].reverse().join(''),hit=SW.find(w=>!found.has(w)&&(w===s||w===rv));
+ if(hit){found.add(hit);sel.forEach(x=>{x.classList.remove('s');x.classList.add('f')});wEl[hit].classList.add('d');beep(784,.15,'triangle',.06);
+  spM.textContent=found.size===SW.length?'🎉 ¡Encontraste todas las palabras!':'✨ ¡Encontraste '+hit+'!';if(found.size===SW.length)win()}
+ else{sel.forEach(x=>x.classList.remove('s'));if(sel.length>1)fail()}
+ sel=[];
+}
+document.addEventListener('mouseup',spCheck);document.addEventListener('touchend',spCheck);
+const spReset=()=>{found.clear();sel=[];cells.forEach(c=>c.classList.remove('s','f'));Object.values(wEl).forEach(e=>e.classList.remove('d'));spM.textContent=''};
+$$('#spR').onclick=spReset;
+
+/* ========== NIVEL 5: MEMORIA ASTRA-07 ========== */
+const AD=[
+'<div class="draw"><div class="ship"><i class="window"></i><i class="wing w1"></i><i class="wing w2"></i></div></div>',
+'<div class="draw"><div class="signal"><i class="dot"></i></div></div>',
+'<div class="draw"><div class="clock"></div></div>',
+'<div class="draw"><div class="planet"></div></div>',
+'<div class="draw"><div class="brain"></div></div>',
+'<div class="draw"><div class="ring"></div><div class="shaft"></div><div class="tooth"></div></div>',
+'<div class="draw"><div class="door"></div></div>',
+'<div class="draw"><div class="head"></div><div class="glass"></div><div class="body"></div><div class="pack"></div><div class="arm arm1"></div><div class="arm arm2"></div></div>'];
+const AN=["ASTRA-07","SEÑAL","17 SEGUNDOS","PLANETA","MEMORIA","IDENTIDAD","NEXUS","ASTRONAUTA"];
+const amB=$$('#amB'),amP=$$('#amP'),amT=$$('#amT'),amM=$$('#amM'),amW=$$('#amW');let first=null,lock=false,fnd=0,tries=0;
+function amStart(){
+ const deck=shuf([...Array(8).keys()].flatMap(i=>[i,i]));first=null;lock=false;fnd=tries=0;
+ amP.textContent='0/8';amT.textContent='0';amM.textContent='Elegí dos cartas para comenzar.';amW.hidden=true;amB.innerHTML='';
+ deck.forEach(id=>{const c=document.createElement('button');c.type='button';c.className='mc';
+  c.innerHTML='<div class="inner"><div class="face back"><span>ASTRA-07</span></div><div class="face front">'+AD[id]+'</div></div>';
+  c.onclick=()=>amPick(c,id);amB.appendChild(c)});
+}
+function amPick(c,id){
+ if(lock||c.classList.contains('open')||c.classList.contains('done'))return;
+ c.classList.add('open');beep(600,.05,'triangle');
+ if(!first){first={c,id};return}
+ tries++;amT.textContent=tries;lock=true;
+ if(first.id===id){first.c.classList.add('done');c.classList.add('done');fnd++;amP.textContent=fnd+'/8';amM.textContent='Registro recuperado: '+AN[id];beep(880,.15,'triangle',.06);first=null;lock=false;
+  if(fnd===8){amM.textContent='¡Todos los registros fueron recuperados!';amW.hidden=false;win()}}
+ else{amM.textContent='No coinciden...';fail();const o=first.c;setTimeout(()=>{o.classList.remove('open');c.classList.remove('open');first=null;lock=false},750)}
+}
+$$('#amR').onclick=amStart;
+
+/* ========== NIVEL 6: LA IDENTIDAD PERDIDA ========== */
+const R=$$('#advGame .box'),q=s=>R.querySelector(s),view=q('#aView');
+const norm=s=>s.toUpperCase().replace(/[^A-Z0-9]/g,'');
+const REC=[
+{t:'La fecha',c:'"Nací el 18/09/2099.\nEl código de mi primer entrenamiento era:\n2 - 1 - 12 - 5 - 24"',
+ q:'Usá A=1, B=2, C=3… con el alfabeto de 26 letras (sin Ñ). ¿Qué palabra aparece?',
+ ok:v=>v==='BALEX',p:'BALEX',h:['Convertí cada número en su letra: el 2 es B.','Las letras son B, A, L, E y la que ocupa el lugar 24.']},
+{t:'El mensaje invertido',c:'SOIRA — ODNUM — ATREUP',
+ q:'Leé cada palabra al revés. Solo una es el apellido del astronauta: ¿cuál?',
+ ok:v=>v==='ARIOS',p:'ARIOS',h:['Las otras dos palabras son un lugar y un objeto.','Invertida, la primera palabra empieza con A.']},
+{t:'Los 17 segundos',c:'17 → 4\n34 → 8\n51 → 12\n68 → ?',
+ q:'Hallá el número que falta y pasalo a letra con A=1 (mismo alfabeto del registro 01).',
+ ok:v=>v==='16'||v==='P',p:'P',h:['Fijate cuántas veces entra 17 en cada número.','El resultado es 16. ¿Qué letra ocupa ese lugar?']},
+{t:'La última letra',c:'"Mi nombre termina con la primera letra\nde la palabra que más escuché en la estación:\nNEXUS."',
+ q:'¿Cuál es esa letra?',
+ ok:v=>v==='N',p:'N',h:['Leé la palabra en mayúsculas del mensaje.','Solo te piden su letra inicial.']}
 ];
-
-let firstCard = null;
-let secondCard = null;
-let lockBoard = false;
-let moves = 0;
-let pairs = 0;
-
-
-function startMemory() {
-
-    const board = document.getElementById("memoryBoard");
-
-    board.innerHTML = "";
-
-    firstCard = null;
-    secondCard = null;
-    lockBoard = false;
-    moves = 0;
-    pairs = 0;
-
-    document.getElementById("moves").textContent = moves;
-    document.getElementById("pairs").textContent = pairs;
-    document.getElementById("memoryMessage").innerHTML = "";
-
-    let shuffled = [...symbols].sort(() => Math.random() - 0.5);
-
-    shuffled.forEach(symbol => {
-
-        const card = document.createElement("div");
-
-        card.className = "memory-card";
-
-        card.dataset.symbol = symbol;
-
-        card.innerHTML = symbol;
-
-        card.onclick = () => flipCard(card);
-
-        board.appendChild(card);
-    });
+let S={solved:{},h:{},v:'intro',i:0},tk=0;
+try{const d=JSON.parse(localStorage.getItem('astra07'));if(d){S.solved=d.solved||{};S.h=d.h||{}}}catch(e){}
+const save=()=>{try{localStorage.setItem('astra07',JSON.stringify({solved:S.solved,h:S.h}))}catch(e){}};
+const count=()=>Object.keys(S.solved).length;
+q('#aMute').onclick=toggleMute;
+function burst(){if(RM)return;R.classList.remove('burst');void R.offsetWidth;R.classList.add('burst');setTimeout(()=>R.classList.remove('burst'),450)}
+function shake(){const p=q('#pn');if(!p)return;p.classList.remove('shake');void p.offsetWidth;p.classList.add('shake')}
+function type(el,txt,sp=22){const my=tk;if(el)el.textContent='';
+ return new Promise(r=>{let i=0;(function n(){if(!el||my!==tk)return r();el.textContent=txt.slice(0,++i);if(i<txt.length)setTimeout(n,RM?0:sp);else r()})()})}
+let left=17;
+setInterval(()=>{left--;if(left<=0){left=17;if(R.offsetParent){burst();beep(80,.5,'sawtooth',.05)}}q('#aBeacon').textContent='próxima señal en '+left+' s'},1000);
+function go(v,i=0){tk++;S.v=v;S.i=i;render()}
+function render(){
+ R.querySelectorAll('#aSeg i').forEach((e,k)=>e.classList.toggle('on',!!S.solved[k]));
+ q('#aCnt').textContent=count()+'/4 registros recuperados';
+ ({intro,hub,rec:()=>rec(S.i),fin,end})[S.v]();
 }
-
-
-function flipCard(card) {
-
-    if(
-        lockBoard ||
-        card === firstCard ||
-        card.classList.contains("matched")
-    ) {
-        return;
-    }
-
-    card.classList.add("flipped");
-
-    if(!firstCard) {
-
-        firstCard = card;
-
-        return;
-    }
-
-    secondCard = card;
-
-    moves++;
-
-    document.getElementById("moves").textContent = moves;
-
-    checkMatch();
+function intro(){
+ view.innerHTML=`<div class="panel"><h2>Señal recibida</h2><p id="t1"></p><pre class="clue" id="t2"></pre><p id="t3" class="mu"></p><div id="bx" hidden><button class="pri" id="bgo">Comenzar investigación</button></div></div>`;
+ q('#bgo').onclick=()=>{beep(520);go('hub')};
+ (async()=>{
+  await type(q('#t1'),'Diecisiete años después de la desaparición de la Astra-07, una transmisión se repite cada 17 segundos.');
+  await type(q('#t2'),'"...si alguien recibe esto..."\n"...no sigan la señal..."\n"...ya nos encontraron."',32);
+  await type(q('#t3'),'Las coordenadas llevan a una estación abandonada. Para abrir el sistema NEXUS tenés que recuperar las cuatro partes de la identidad del astronauta.');
+  const b=q('#bx');if(b)b.hidden=false;
+ })();
 }
-
-
-function checkMatch() {
-
-    const match =
-        firstCard.dataset.symbol === secondCard.dataset.symbol;
-
-    if(match) {
-
-        firstCard.classList.add("matched");
-        secondCard.classList.add("matched");
-
-        pairs++;
-
-        document.getElementById("pairs").textContent = pairs;
-
-        resetCards();
-
-        if(pairs === 8) {
-
-            document.getElementById("memoryMessage").innerHTML =
-                '<div class="success">🎉 ¡Nivel completado!</div>';
-        }
-
-    } else {
-
-        lockBoard = true;
-
-        setTimeout(() => {
-
-            firstCard.classList.remove("flipped");
-            secondCard.classList.remove("flipped");
-
-            resetCards();
-
-        }, 900);
-    }
+function hub(){
+ view.innerHTML=`<div class="panel"><h2>Estación abandonada</h2><pre class="clue">ASTRA-07 DETECTADA\nTRIPULANTE A-01: MEMORIA INCOMPLETA\n${4-count()} ARCHIVOS BLOQUEADOS</pre>
+ <div class="rg">${REC.map((r,i)=>`<button class="rc ${S.solved[i]?'done':''}" data-i="${i}"><small>Registro 0${i+1}</small><b>${r.t}</b><span>${S.solved[i]?'✓ '+r.p:'Bloqueado'}</span></button>`).join('')}</div></div>`;
+ view.querySelectorAll('.rc').forEach(b=>b.onclick=()=>{beep(380,.08);go('rec',+b.dataset.i)});
 }
-
-
-function resetCards() {
-
-    firstCard = null;
-    secondCard = null;
-    lockBoard = false;
+function rec(i){
+ const r=REC[i],done=S.solved[i],n=S.h[i]||0;
+ view.innerHTML=`<div class="panel" id="pn"><button class="ghost" id="bk">← Volver a los registros</button><h2>Registro 0${i+1}: ${r.t}</h2><pre class="clue">${r.c}</pre><p>${r.q}</p>
+ <div class="row"><input id="in" autocomplete="off" spellcheck="false" placeholder="Tu respuesta" aria-label="Tu respuesta" ${done?'disabled':''}><button class="pri" id="ok" ${done?'disabled':''}>Descifrar</button><button id="hn" ${done||n>=2?'disabled':''}>Pista (${n}/2)</button></div>
+ <div id="hs">${r.h.slice(0,n).map((t,k)=>`<p class="am">Pista ${k+1}: ${t}</p>`).join('')}</div>
+ <p id="m" class="msg" aria-live="polite">${done?'<span class="good">✓ Registro recuperado: '+r.p+'</span>':''}</p></div>`;
+ q('#bk').onclick=()=>go('hub');
+ if(done)return;
+ const m=q('#m'),inp=q('#in');inp.focus({preventScroll:true});
+ const tryIt=()=>{
+  const v=norm(inp.value);if(!v)return;
+  if(r.ok(v)){
+   S.solved[i]=1;save();[523,659,784].forEach((f,k)=>beep(f,.18,'triangle',.06,k*.1));burst();
+   m.innerHTML='<span class="good">✓ Registro recuperado: '+r.p+'</span>';
+   inp.disabled=q('#ok').disabled=q('#hn').disabled=true;
+   R.querySelectorAll('#aSeg i').forEach((e,k)=>e.classList.toggle('on',!!S.solved[k]));
+   q('#aCnt').textContent=count()+'/4 registros recuperados';
+   const my=tk;setTimeout(()=>{if(my===tk)go(count()>=4?'fin':'hub')},1500);
+  }else{fail();m.innerHTML='<span class="bad">✗ Clave incorrecta.</span>';shake()}
+ };
+ q('#ok').onclick=tryIt;inp.onkeydown=e=>{if(e.key==='Enter')tryIt()};
+ q('#hn').onclick=()=>{const k=S.h[i]||0;if(k>=2)return;S.h[i]=k+1;save();beep(300,.1);
+  q('#hs').insertAdjacentHTML('beforeend','<p class="am">Pista '+(k+1)+': '+r.h[k]+'</p>');
+  q('#hn').textContent='Pista ('+(k+1)+'/2)';if(k+1>=2)q('#hn').disabled=true};
 }
-
-
-/* =========================================
-   NIVEL 2 - ROMPECABEZAS
-========================================= */
-
-let puzzlePieces = [];
-
-
-function startPuzzle() {
-
-    const board = document.getElementById("puzzleBoard");
-
-    board.innerHTML = "";
-
-    document.getElementById("puzzleMessage").innerHTML = "";
-
-    puzzlePieces = [];
-
-    for(let i = 0; i < 9; i++) {
-
-        puzzlePieces.push(i);
-    }
-
-    puzzlePieces.sort(() => Math.random() - 0.5);
-
-    puzzlePieces.forEach((position, index) => {
-
-        const piece = document.createElement("div");
-
-        piece.className = "puzzle-piece";
-
-        piece.draggable = true;
-
-        const x = position % 3;
-        const y = Math.floor(position / 3);
-
-        piece.style.backgroundImage =
-            "url('https://picsum.photos/300/300')";
-
-        piece.style.backgroundPosition =
-            `${x * 50}% ${y * 50}%`;
-
-        piece.dataset.position = position;
-
-        piece.addEventListener("dragstart", dragStart);
-        piece.addEventListener("dragover", dragOver);
-        piece.addEventListener("drop", dropPiece);
-
-        board.appendChild(piece);
-    });
+function fin(){
+ const sh=shuf(['BALEX','ARIOS','P','N']);let pick=[];
+ view.innerHTML=`<div class="panel" id="pn"><h2>Identidad recuperada</h2><p>Los cuatro registros dieron fragmentos. Ordenalos para formar el nombre del astronauta: nombre, apellido y sus dos iniciales.</p>
+ <div class="chips" id="ch"></div><pre class="clue" id="as"></pre><div class="row"><button class="pri" id="act">Activar NEXUS</button><button id="clr">Borrar</button></div><p id="m" class="msg" aria-live="polite"></p></div>`;
+ const draw=()=>{q('#as').textContent=pick.length?pick.join('  '):'_  _  _  _';
+  q('#ch').innerHTML=sh.map(f=>`<button data-f="${f}" ${pick.includes(f)?'disabled':''}>${f}</button>`).join('');
+  q('#ch').querySelectorAll('button').forEach(b=>b.onclick=()=>{pick.push(b.dataset.f);beep(440,.06);draw()})};
+ draw();
+ q('#clr').onclick=()=>{pick=[];q('#m').textContent='';draw()};
+ q('#act').onclick=()=>{const m=q('#m');
+  if(pick.length<4){m.innerHTML='<span class="am">Faltan fragmentos.</span>';return}
+  if(pick[0]==='BALEX'&&pick[1]==='ARIOS'&&[pick[2],pick[3]].sort().join()==='N,P'){
+   burst();[392,523,659,880].forEach((f,k)=>beep(f,.25,'triangle',.06,k*.12));const my=tk;setTimeout(()=>{if(my===tk)go('end')},900)
+  }else{fail();m.innerHTML='<span class="bad">La identidad no coincide. Revisá el orden.</span>';shake()}};
 }
-
-
-let draggedPiece = null;
-
-
-function dragStart(e) {
-
-    draggedPiece = e.target;
+function end(){
+ view.innerHTML=`<div class="panel"><h2>Ruta de regreso establecida</h2><pre class="clue" id="e1"></pre><p id="e2"></p><p id="e3"></p><pre class="clue" id="e4"></pre>
+ <p class="big gl" id="e5" data-t="AHORA USTEDES SABEN QUIÉN SOY." hidden>AHORA USTEDES SABEN QUIÉN SOY.</p><div id="e6" hidden><h2>Fin</h2><button class="pri" id="again">Jugar de nuevo</button></div></div>`;
+ q('#again').onclick=()=>{S={solved:{},h:{},v:'intro',i:0};save();go('intro')};
+ (async()=>{
+  await type(q('#e1'),'IDENTIDAD RECUPERADA.\nRUTA DE REGRESO ESTABLECIDA.\nASTRA-07 LOCALIZADA.',28);
+  await type(q('#e2'),'La Astra-07 aparece en los radares. Después de diecisiete años, ha regresado.');
+  await type(q('#e3'),'Pero no hay nadie a bordo.');
+  await type(q('#e4'),'SEÑAL DETECTADA.\nORIGEN: DESCONOCIDO.\nDISTANCIA: 17 SEGUNDOS.',40);
+  const a=q('#e5'),b=q('#e6');if(!a)return;burst();beep(70,.8,'sawtooth',.07);a.hidden=false;b.hidden=false;
+ })();
 }
-
-
-function dragOver(e) {
-
-    e.preventDefault();
-}
-
-
-function dropPiece(e) {
-
-    e.preventDefault();
-
-    const target = e.target;
-
-    if(
-        target.classList.contains("puzzle-piece") &&
-        target !== draggedPiece
-    ) {
-
-        const board = document.getElementById("puzzleBoard");
-
-        const pieces = [...board.children];
-
-        const draggedIndex = pieces.indexOf(draggedPiece);
-        const targetIndex = pieces.indexOf(target);
-
-        if(draggedIndex < targetIndex) {
-
-            board.insertBefore(
-                draggedPiece,
-                target.nextSibling
-            );
-
-        } else {
-
-            board.insertBefore(
-                draggedPiece,
-                target
-            );
-        }
-
-        checkPuzzle();
-    }
-}
-
-
-function checkPuzzle() {
-
-    const pieces =
-        [...document.querySelectorAll(".puzzle-piece")];
-
-    const correct =
-        pieces.every((piece, index) =>
-            Number(piece.dataset.position) === index
-        );
-
-    if(correct) {
-
-        document.getElementById("puzzleMessage").innerHTML =
-            '<div class="success">🎉 ¡Rompecabezas completado!</div>';
-    }
-}
-
-
-/* =========================================
-   NIVEL 3 - FRASES
-========================================= */
-
-const sentenceData = [
-
-    {
-        words: ["El", "gato", "duerme", "en", "la", "casa"],
-        answer: "El gato duerme en la casa"
-    },
-
-    {
-        words: ["Me", "gusta", "jugar", "a", "los", "videojuegos"],
-        answer: "Me gusta jugar a los videojuegos"
-    },
-
-    {
-        words: ["Hoy", "es", "un", "día", "muy", "lindo"],
-        answer: "Hoy es un día muy lindo"
-    }
-
-];
-
-let currentSentence = null;
-let selectedWords = [];
-
-
-function startSentence() {
-
-    currentSentence =
-        sentenceData[
-            Math.floor(Math.random() * sentenceData.length)
-        ];
-
-    selectedWords = [];
-
-    const container =
-        document.getElementById("sentenceWords");
-
-    container.innerHTML = "";
-
-    document.getElementById("sentence").innerHTML = "";
-
-    document.getElementById("sentenceMessage").innerHTML = "";
-
-    const shuffled =
-        [...currentSentence.words]
-        .sort(() => Math.random() - 0.5);
-
-    shuffled.forEach(word => {
-
-        const button = document.createElement("div");
-
-        button.className = "word";
-
-        button.textContent = word;
-
-        button.onclick = () => selectWord(button, word);
-
-        container.appendChild(button);
-    });
-}
-
-
-function selectWord(element, word) {
-
-    if(element.style.opacity === "0.4") {
-        return;
-    }
-
-    element.style.opacity = "0.4";
-
-    selectedWords.push(word);
-
-    const selected =
-        document.createElement("div");
-
-    selected.className = "word";
-
-    selected.textContent = word;
-
-    document.getElementById("sentence").appendChild(selected);
-}
-
-
-function checkSentence() {
-
-    const result =
-        selectedWords.join(" ");
-
-    if(result === currentSentence.answer) {
-
-        document.getElementById("sentenceMessage").innerHTML =
-            '<div class="success">🎉 ¡Correcto! Frase completada.</div>';
-
-    } else {
-
-        document.getElementById("sentenceMessage").innerHTML =
-            '<div style="color:#e05252;margin:20px;font-weight:bold;">❌ Todavía no. ¡Intentá nuevamente!</div>';
-    }
-}
-
-
-/* Iniciar memoria al cargar */
-
-startMemory();
-
+q('#aReset').onclick=()=>{if(!confirm('¿Reiniciar la investigación? Se borra tu progreso.'))return;S={solved:{},h:{},v:'intro',i:0};save();burst();go('intro')};
+const advOpen=()=>{tk++;S.v=count()>=4?'fin':count()?'hub':'intro';render()};
+
+/* ========== NAVEGACIÓN (extiende openGame sin tocarlo) ========== */
+const NEW={sopa:['spGame',spReset],astra:['amGame',amStart],adv:['advGame',advOpen]},og=window.openGame;
+window.openGame=g=>{
+ const n=NEW[g];if(!n)return og(g);
+ $$('.levels').style.display='none';$$('.video-section').style.display='none';
+ document.querySelectorAll('.game-section').forEach(s=>s.style.display='none');
+ $$('#'+n[0]).style.display='block';n[1]();scrollTo({top:0,behavior:'smooth'});
+};
+amStart();
+})();
 </script>
-
-</body>
-</html>
