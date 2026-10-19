@@ -110,10 +110,24 @@ body.lock{overflow:hidden}
 #fin2{position:fixed;inset:0;z-index:99;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;padding:24px;opacity:0;transition:opacity 2s}
 #fin2.on{opacity:1}
 #fin2 pre{font:clamp(16px,3.4vw,24px)/1.9 'Courier New',monospace;color:#d9d4c7;white-space:pre-wrap;text-align:center;text-shadow:0 0 18px #7a1414;max-width:700px}
+/* intro iluminada */
+#intro{background:radial-gradient(ellipse at 50% 45%,#2f4d35 0%,#18281d 55%,#0b150e 100%);overflow:hidden;animation:crt 5s infinite}
+#intro::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(transparent 0 2px,rgba(0,0,0,.22) 3px);pointer-events:none}
+#intro::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.55));pointer-events:none}
+@keyframes crt{0%,100%{filter:brightness(1)}50%{filter:brightness(1.07)}52%{filter:brightness(.92)}54%{filter:brightness(1.05)}}
+#intro.dim{filter:brightness(.06)!important;animation:none}
+#intro.dead{background:#000!important;filter:none!important;animation:none}
+#intro.dead>*,#intro.dead::before,#intro.dead::after{visibility:hidden}
+#boot{display:flex;flex-direction:column;justify-content:flex-end;width:min(92vw,680px);height:min(58vh,430px);overflow:hidden;font:15px/1.7 'Courier New',monospace;color:#b6ffbf;text-shadow:0 0 6px rgba(150,255,170,.8),0 0 18px rgba(80,200,110,.5);white-space:pre-wrap;text-align:left;min-height:0;z-index:1}
+#boot .mut{color:#6fbf7e}#boot .ok{color:#fff;text-shadow:0 0 10px #9dffa8}#boot .err{color:#ff6b6b;text-shadow:0 0 10px #ff2e2e}#boot .warn{color:#ffd86b;text-shadow:0 0 10px #e0a800}#boot .hex{color:#4f9a5d;font-size:13px}
+.cur{animation:cur 1s steps(1) infinite}@keyframes cur{50%{opacity:0}}
+#enter{color:#b6ffbf;border-color:#b6ffbf;text-shadow:0 0 8px #9dffa8;box-shadow:0 0 18px rgba(150,255,170,.25);z-index:1}
+#enter:hover{background:#b6ffbf;color:#0b150e;box-shadow:0 0 30px #9dffa8}
+#skip{color:#6fbf7e;font:12px 'Courier New',monospace;transition:opacity .6s;z-index:1}
 /* atmósfera */
 .fog{position:fixed;inset:-20%;z-index:-2;pointer-events:none;background:radial-gradient(ellipse at 20% 30%,rgba(90,20,20,.16),transparent 45%),radial-gradient(ellipse at 80% 70%,rgba(40,50,60,.2),transparent 50%),radial-gradient(ellipse at 50% 100%,rgba(70,70,75,.14),transparent 55%);animation:fog 40s ease-in-out infinite alternate}
 .grain{position:fixed;inset:-50%;z-index:48;pointer-events:none;opacity:.14;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain .8s steps(4) infinite}
-.dark{position:fixed;inset:0;z-index:49;pointer-events:none;background:radial-gradient(circle calc(560px*var(--k,1)) at var(--x,50%) var(--y,40%),transparent 0,rgba(0,0,0,.5) 60%,rgba(0,0,0,.82) 100%)}
+.dark{position:fixed;inset:0;z-index:49;pointer-events:none;background:radial-gradient(circle calc(560px*var(--k,1)) at var(--x,50%) var(--y,40%),transparent 0,rgba(0,0,0,.62) 60%,rgba(0,0,0,.94) 100%)}
 .scan{position:fixed;inset:0;z-index:50;pointer-events:none;background:repeating-linear-gradient(transparent 0 2px,rgba(0,0,0,.18) 3px),radial-gradient(ellipse at center,transparent 45%,rgba(0,0,0,.75))}
 .whisper{position:fixed;z-index:47;pointer-events:none;color:var(--blood);font-style:italic;font-size:clamp(14px,2.4vw,22px);opacity:0;animation:whisper 4.5s ease-in-out forwards;text-shadow:0 0 14px rgba(122,20,20,.8)}
 @keyframes whisper{0%,100%{opacity:0;filter:blur(6px)}30%,60%{opacity:.75;filter:blur(0)}}
@@ -127,14 +141,14 @@ body.burst main,body.burst header,body.burst .game{animation:burst .45s steps(2)
 @keyframes burst{0%{transform:translate(5px,0);filter:url(#ab) invert(.9) contrast(1.4)}30%{transform:translate(-7px,2px);filter:url(#ab) brightness(.3)}60%{transform:translate(3px,-2px) skewX(3deg);filter:url(#ab) contrast(1.6)}100%{transform:none;filter:none}}
 #mute{position:fixed;right:14px;bottom:14px;z-index:60;padding:8px 12px;background:rgba(5,4,5,.85);color:var(--ash);border:1px solid #2a1a1a;font-size:14px;opacity:.6}
 #mute:hover{opacity:1}
-@media(max-width:800px){.levels-grid{grid-template-columns:1fr}.memory-card{height:90px}.dark{background:radial-gradient(circle calc(340px*var(--k,1)) at var(--x,50%) var(--y,40%),transparent 0,rgba(0,0,0,.48) 60%,rgba(0,0,0,.8) 100%)}}
+@media(max-width:800px){.levels-grid{grid-template-columns:1fr}.memory-card{height:90px}.dark{background:radial-gradient(circle calc(340px*var(--k,1)) at var(--x,50%) var(--y,40%),transparent 0,rgba(0,0,0,.6) 60%,rgba(0,0,0,.93) 100%)}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important}}
 </style>
 </head>
 <body class="lock">
 <canvas id="cv"></canvas><div id="wipe"></div><div id="fl"></div><div class="vhs"></div>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><filter id="ab" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB"><feColorMatrix in="SourceGraphic" values="1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0" result="r"/><feColorMatrix in="SourceGraphic" values="0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 0" result="g"/><feColorMatrix in="SourceGraphic" values="0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0" result="b"/><feOffset in="r" dx="-7" result="r2"/><feOffset in="b" dx="7" result="b2"/><feBlend in="r2" in2="g" mode="screen" result="rg"/><feBlend in="rg" in2="b2" mode="screen"/></filter></defs></svg>
-<div id="intro"><pre id="boot"></pre><button id="enter">ENTRAR</button></div>
+<div id="intro"><div id="boot"></div><button id="enter">ENTRAR</button><small id="skip">toca la pantalla para saltar</small></div>
 <div class="fog" aria-hidden="true"></div><div class="grain" aria-hidden="true"></div><div class="dark" id="dk" aria-hidden="true"></div><div class="scan" aria-hidden="true"></div>
 <button id="mute">🔊</button>
 
@@ -372,11 +386,39 @@ addEventListener('pointerup',()=>{
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
 function wipe(cb){const w=$('#wipe');w.style.opacity=1;burst();setTimeout(()=>{cb();w.style.opacity=0},420)}
 function scr(el,t,d=900){const G='█▓▒░#%&@01<>/|',n=t.length,st=performance.now();(function f(now){const p=Math.min(1,(now-st)/d);el.textContent=[...t].map((ch,i)=>ch===' '||i<p*n?ch:G[Math.random()*G.length|0]).join('');if(p<1)requestAnimationFrame(f)})(st)}
-/* intro tipo terminal */
-(()=>{const L='> CONECTANDO CON LA ESTACIÓN ASTRA-07...\n> SEÑAL DÉBIL · RETRASO: 17 SEGUNDOS\n> ORIGEN: DESCONOCIDO\n> ADVERTENCIA: ALGO TE ESTÁ MIRANDO\n\n> ¿CONTINUAR?',b=$('#boot'),en=$('#enter');let i=0,sk=0;
- const iv=setInterval(()=>{b.textContent=L.slice(0,sk?L.length:++i);if(i>=L.length||sk){b.textContent=L;clearInterval(iv);en.style.opacity=1;en.style.pointerEvents='auto'}},28);
- $('#intro').addEventListener('click',()=>sk=1);
- en.onclick=e=>{e.stopPropagation();startDrone();burst();$('#intro').classList.add('out');document.body.classList.remove('lock');setTimeout(()=>$('#intro').remove(),1700);scr($('.l1'),'DESAFÍO',1300);scr($('.l2'),'MENTAL',1800)}})();
+/* intro: terminal generando texto + corte de luz */
+(()=>{const b=$('#boot'),en=$('#enter');let sk=0;$('#intro').addEventListener('click',()=>sk=1);
+ const w=ms=>sk?Promise.resolve():wait(ms),H=n=>[...Array(n)].map(()=>(Math.random()*256|0).toString(16).padStart(2,'0')).join(' ').toUpperCase();
+ const ln=c=>{const d=document.createElement('div');if(c)d.className=c;b.append(d);while(b.children.length>16)b.firstChild.remove();return d};
+ const cur=()=>{$$('#boot .cur').forEach(x=>x.remove());const e=document.createElement('span');e.className='cur';e.textContent='█';return e};
+ async function ty(t,c){const d=ln(c),e=cur();d.append(e);for(const ch of t){e.before(ch);await w(ch===' '?8:10+Math.random()*28)}return d}
+ (async()=>{
+  await w(600);
+  await ty('ASTRA-OS 17.0.4 — terminal de recepción','mut');await w(300);
+  for(const t of ['comprobando memoria','montando /dev/astra07','sincronizando reloj estelar']){const d=await ty('> '+t+' ........ ');await w(200+Math.random()*350);const o=document.createElement('b');o.className='ok';o.textContent='OK';d.querySelector('.cur').before(o)}
+  {const d=ln();for(let p=0;p<=100;p+=4){const f=p/5|0;d.textContent='> cargando señal  ['+'█'.repeat(f)+'░'.repeat(20-f)+'] '+p+'%';await w(40+Math.random()*70)}}
+  await w(250);await ty('> ERROR 0x17F: origen de la señal no verificado','err');await w(500);
+  await ty('> descifrando transmisión...');
+  for(let i=0;i<6;i++){ln('hex').textContent='0x'+(0x4A00+i*16).toString(16).toUpperCase()+'  '+H(8)+'  '+H(8);await w(90)}
+  const d=ln('warn');scr(d,'> ADVERTENCIA: ALGO TE ESTÁ MIRANDO',1300);await w(1500);
+  ln();await ty('> ¿CONTINUAR?');
+  en.style.opacity=1;en.style.pointerEvents='auto';$('#skip').style.opacity=0;
+ })();
+ en.onclick=e=>{e.stopPropagation();outage()}})();
+async function outage(){
+ const i=$('#intro');try{AC().resume()}catch(e){}
+ $('#enter').style.display='none';$('#skip').style.display='none';
+ noise(.3,.12,3500,1);sweep(1000,45,1.3,.08);beep(55,.6,'sine',.15);
+ for(const d of [90,60,140,70,220,50,180]){i.classList.toggle('dim');noise(.05,.08,3000,2);beep(100+Math.random()*100,.05,'square',.05);await wait(d)}
+ i.classList.remove('dim');i.classList.add('dead');sweep(140,26,.7,.22,'sine');noise(.2,.1,180,1);
+ document.body.classList.remove('lock');setK(.03);
+ await wait(1900);
+ i.classList.add('out');mv(innerWidth/2,innerHeight*.42);
+ for(const [k,d] of [[.2,90],[.03,120],[.55,70],[.03,170],[.85,60],[.1,100],[1,0]]){setK(k);noise(.04,.1,4000,2);beep(1500,.02,'square',.04);await wait(d)}
+ noise(.08,.08,300,1);startDrone();
+ setTimeout(()=>i.remove(),1700);
+ scr($('.l1'),'DESAFÍO',1300);scr($('.l2'),'MENTAL',1800);
+}
 /* polvo y estrellas con parallax */
 (()=>{const c=$('#cv'),x=c.getContext('2d'),P=[];let W,H,mx=0,my=0;const rs=()=>{W=c.width=innerWidth;H=c.height=innerHeight};rs();addEventListener('resize',rs);
  for(let i=0;i<140;i++)P.push({x:Math.random(),y:Math.random(),z:Math.random()*.9+.1,t:Math.random()*6,v:Math.random()*.00006+.00002});
